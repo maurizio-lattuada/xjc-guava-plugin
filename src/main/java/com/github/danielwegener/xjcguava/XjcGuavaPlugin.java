@@ -118,8 +118,12 @@ public class XjcGuavaPlugin extends Plugin {
         final JBlock content = hashCodeMethod.body();
         hashCodeMethod.annotate(Override.class);
         final JInvocation hashCodeCall = objects.staticInvoke("hashCode");
-        superClassInstanceFields.stream().forEachOrdered(superField -> hashCodeCall.arg(superField));
-        thisClassInstanceFields.stream().forEachOrdered(thisField -> hashCodeCall.arg(thisField));
+        for (JFieldVar superField : superClassInstanceFields) {
+            hashCodeCall.arg(superField);
+        }
+        for (JFieldVar thisField : thisClassInstanceFields) {
+            hashCodeCall.arg(thisField);
+        }
         content._return(hashCodeCall);
     }
 
@@ -185,11 +189,11 @@ public class XjcGuavaPlugin extends Plugin {
      */
     protected Collection<JFieldVar> getInstanceFields(final Collection<JFieldVar> fields) {
         final List<JFieldVar> instanceFields = new ArrayList<JFieldVar>();
-        fields.stream().forEachOrdered(field -> {
+        for (JFieldVar field : fields) {
             if (!isStatic(field)) {
                 instanceFields.add(field);
             }
-        });
+        }
         return instanceFields;
     }
 

@@ -146,8 +146,9 @@ public class XjcGuavaPlugin extends Plugin {
         final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
         // Don't create equals for empty classes
-        if (thisClassInstanceFields.isEmpty() && superClassInstanceFields.isEmpty())
+        if (thisClassInstanceFields.isEmpty() && superClassInstanceFields.isEmpty()) {
             return;
+        }
 
         final JMethod equalsMethod = clazz.method(JMod.PUBLIC, model.BOOLEAN, "equals");
         equalsMethod.annotate(Override.class);
